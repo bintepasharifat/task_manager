@@ -52,7 +52,8 @@ class MyApp extends StatelessWidget {
         SplashScreen.routeName: (context) => const SplashScreen(),
         SignInScreen.routeName: (context) => const SignInScreen(),
         SignUpScreen.routeName: (context) => const SignUpScreen(),
-        ForgotPasswordEmail.routeName: (context) => const ForgotPasswordEmail(),
+        ForgotPasswordEmailScreen.routeName: (context) =>
+            const ForgotPasswordEmailScreen(),
         PinVerificationScreen.routeName: (context) =>
             const PinVerificationScreen(),
         ChangePasswordScreen.routeName: (context) =>

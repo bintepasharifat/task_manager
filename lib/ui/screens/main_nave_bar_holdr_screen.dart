@@ -72,7 +72,7 @@ class _MainNaveBarHoldrScreenState extends State<MainNaveBarHoldrScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TmAppBar(),
+      appBar: TMAppBar(),
       body: _screens[_slectedIndex],
       bottomNavigationBar: NavigationBar(
         selectedIndex: _slectedIndex,

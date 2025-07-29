@@ -1,195 +1,15 @@
-// import 'package:email_validator/email_validator.dart';
-// import 'package:flutter/gestures.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_svg/svg.dart';
-// import 'package:task_manager/ui/utils/assets_imagepath.dart';
-// import 'package:task_manager/ui/widgets/screen_background.dart';
-// import 'package:task_manager/ui/widgets/tm_app_bar.dart';
+import 'dart:convert';
+import 'dart:typed_data';
 
-// class UpdateProfileScreen extends StatefulWidget {
-//   const UpdateProfileScreen({super.key});
-//   static const String routeName = '/update_profile_screen';
-
-//   @override
-//   State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
-// }
-
-// class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
-//   final TextEditingController _emailController = TextEditingController();
-//   final TextEditingController _passwordController = TextEditingController();
-//   final TextEditingController _firstNameController = TextEditingController();
-//   final TextEditingController _lastNameController = TextEditingController();
-//   final TextEditingController _phoneController = TextEditingController();
-//   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: TmAppBar(),
-//       body: ScreenBackground(
-//         child: SingleChildScrollView(
-//           child: Padding(
-//             padding: const EdgeInsets.all(16),
-//             child: Form(
-//               key: _formKey,
-//               autovalidateMode: AutovalidateMode.onUserInteraction,
-//               child: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   SizedBox(
-//                     height: 80,
-//                   ),
-//                   Text('Update Profile',
-//                       style:
-//                           TextStyle(fontSize: 28, fontWeight: FontWeight.w700)),
-//                   SizedBox(
-//                     height: 24,
-//                   ),
-//                   TextFormField(
-//                     controller: _emailController,
-//                     textInputAction: TextInputAction.next,
-//                     decoration: InputDecoration(
-//                       hintText: 'Email',
-//                     ),
-//                     validator: (String? value) {
-//                       String email = value ?? '';
-//                       if (EmailValidator.validate(email) == false) {
-//                         return 'Enter a valid email';
-//                       }
-//                       return null;
-//                     },
-//                   ),
-//                   SizedBox(
-//                     height: 24,
-//                   ),
-//                   TextFormField(
-//                     controller: _firstNameController,
-//                     textInputAction: TextInputAction.next,
-//                     decoration: InputDecoration(
-//                       hintText: 'First Name',
-//                     ),
-//                     validator: (String? value) {
-//                       if (value?.trim().isEmpty ?? true) {
-//                         return 'Enter your first name';
-//                       }
-
-//                       return null;
-//                     },
-//                   ),
-//                   SizedBox(
-//                     height: 24,
-//                   ),
-//                   TextFormField(
-//                     controller: _lastNameController,
-//                     textInputAction: TextInputAction.next,
-//                     decoration: InputDecoration(
-//                       hintText: 'Last Name',
-//                     ),
-//                     validator: (String? value) {
-//                       if (value?.trim().isEmpty ?? true) {
-//                         return 'Enter your Last name';
-//                       }
-
-//                       return null;
-//                     },
-//                   ),
-//                   SizedBox(
-//                     height: 24,
-//                   ),
-//                   TextFormField(
-//                     controller: _phoneController,
-//                     textInputAction: TextInputAction.next,
-//                     obscureText: true,
-//                     keyboardType: TextInputType.phone,
-//                     decoration: InputDecoration(
-//                       hintText: 'Mobil Number',
-//                     ),
-//                     validator: (String? value) {
-//                       if (value?.trim().isEmpty ?? true) {
-//                         return 'Enter your mobil number';
-//                       }
-
-//                       return null;
-//                     },
-//                   ),
-//                   SizedBox(
-//                     height: 10,
-//                   ),
-//                   TextFormField(
-//                     controller: _passwordController,
-//                     obscureText: true,
-//                     decoration: InputDecoration(
-//                       fillColor: Colors.white,
-//                       hintText: 'Password',
-//                     ),
-//                     validator: (String? value) {
-//                       if ((value?.length ?? 0) <= 6) {
-//                         return 'Enter a valid password';
-//                       }
-//                       return null;
-//                     },
-//                   ),
-//                   SizedBox(
-//                     height: 16,
-//                   ),
-//                   ElevatedButton(
-//                       style: ElevatedButton.styleFrom(
-//                           shape: RoundedRectangleBorder(
-//                               borderRadius: BorderRadius.circular(8)),
-//                           padding: EdgeInsets.symmetric(vertical: 12),
-//                           backgroundColor: Colors.green,
-//                           foregroundColor: Colors.white,
-//                           fixedSize: Size.fromWidth(double.maxFinite)),
-//                       onPressed: _onTapSubmitButton,
-//                       child: Icon(Icons.arrow_circle_down_outlined)),
-// //                   SizedBox(
-//                     height: 32,
-//                   ),
-//                   Center(
-//                     child: RichText(
-//                         text: TextSpan(
-//                             text: " Have an acount?",
-//                             style: TextStyle(
-//                                 fontSize: 20,
-//                                 fontWeight: FontWeight.w600,
-//                                 color: Colors.black,
-//                                 letterSpacing: 0.6),
-//                             children: [
-//                           TextSpan(
-//                               text: "Sign In",
-//                               style: TextStyle(
-//                                   color: Colors.green,
-//                                   fontWeight: FontWeight.w700),
-//                               recognizer: TapGestureRecognizer()
-//                                 ..onTap = _onTapSubmitButton),
-//                         ])),
-//                   )
-//                 ],
-//               ),
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-
-//   void _onTapSubmitButton() {
-//     if (_formKey.currentState!.validate()) {}
-//   }
-
-//   @override
-//   void dispose() {
-//     _emailController.dispose();
-//     _passwordController.dispose();
-//     _firstNameController.dispose();
-//     _lastNameController.dispose();
-//     _phoneController.dispose();
-//     super.dispose();
-//   }
-// }
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:task_manager/data/models/user_model.dart';
+import 'package:task_manager/data/service/network_caller.dart';
+import 'package:task_manager/data/urls.dart';
+import 'package:task_manager/ui/controllers/auth_controller.dart';
+import 'package:task_manager/ui/widgets/centered_circular_progress_indicator.dart';
 import 'package:task_manager/ui/widgets/screen_background.dart';
+import 'package:task_manager/ui/widgets/snack_bar_message.dart';
 import 'package:task_manager/ui/widgets/tm_app_bar.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
@@ -210,12 +30,21 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final ImagePicker _imagePicker = ImagePicker();
   XFile? _selectedImage;
-  bool _obscureText = true;
+  bool _updateProfileInProgress = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _emailTEController.text = AuthController.userModel?.email ?? '';
+    _firstNameTEController.text = AuthController.userModel?.firstName ?? '';
+    _lastNameTEController.text = AuthController.userModel?.lastName ?? '';
+    _phoneTEController.text = AuthController.userModel?.phone ?? '';
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TmAppBar(),
+      appBar: TMAppBar(),
       body: ScreenBackground(
         child: SingleChildScrollView(
           child: Padding(
@@ -237,14 +66,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   TextFormField(
                     controller: _emailTEController,
                     textInputAction: TextInputAction.next,
-                    decoration: InputDecoration(hintText: 'Email'),
-                    validator: (String? value) {
-                      String email = value ?? '';
-                      if (EmailValidator.validate(email) == false) {
-                        return 'Enter a valid email';
-                      }
-                      return null;
-                    },
+                    enabled: false,
                   ),
                   const SizedBox(height: 8),
                   TextFormField(
@@ -275,7 +97,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     controller: _phoneTEController,
                     keyboardType: TextInputType.phone,
                     textInputAction: TextInputAction.next,
-                    decoration: InputDecoration(hintText: 'Phone'),
+                    decoration: InputDecoration(hintText: 'Mobile'),
                     validator: (String? value) {
                       if (value?.trim().isEmpty ?? true) {
                         return 'Enter your mobile number';
@@ -284,43 +106,35 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     },
                   ),
                   const SizedBox(height: 8),
-                  
                   TextFormField(
                     controller: _passwordTEController,
-                    obscureText: _obscureText,
-                    decoration: InputDecoration(
-                      hintText: 'Password',
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscureText
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _obscureText = !_obscureText;
-                          });
-                        },
-                      ),
-                    ),
+                    obscureText: true,
+                    decoration: InputDecoration(hintText: 'Password'),
                     validator: (String? value) {
-                      if ((value?.length ?? 0) <= 6) {
-                        return 'Enter a valid password';
+                      int length = value?.length ?? 0;
+
+                      if (length > 0 && length <= 6) {
+                        return 'Enter a password more than 6 letters';
                       }
+
                       return null;
                     },
                   ),
                   const SizedBox(height: 16),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8)),
-                        padding: EdgeInsets.symmetric(vertical: 12),
-                        backgroundColor: Colors.green,
-                        foregroundColor: Colors.white,
-                        fixedSize: Size.fromWidth(double.maxFinite)),
-                    onPressed: _onTapSubmitButton,
-                    child: Icon(Icons.arrow_circle_right_outlined),
+                  Visibility(
+                    visible: _updateProfileInProgress == false,
+                    replacement: CenteredCircularProgressIndicator(),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8)),
+                          padding: EdgeInsets.symmetric(vertical: 12),
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                          fixedSize: Size.fromWidth(double.maxFinite)),
+                      onPressed: _onTapSubmitButton,
+                      child: Icon(Icons.arrow_circle_down_outlined),
+                    ),
                   ),
                 ],
               ),
@@ -367,7 +181,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
               _selectedImage == null ? 'Select image' : _selectedImage!.name,
               maxLines: 1,
               style: TextStyle(overflow: TextOverflow.ellipsis),
-            )
+            ),
           ],
         ),
       ),
@@ -375,8 +189,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   }
 
   Future<void> _onTapPhotoPicker() async {
-    final XFile? pickedImage =
-        await _imagePicker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedImage = await _imagePicker.pickImage(
+      source: ImageSource.gallery,
+    );
     if (pickedImage != null) {
       _selectedImage = pickedImage;
       setState(() {});
@@ -385,7 +200,65 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
   void _onTapSubmitButton() {
     if (_formKey.currentState!.validate()) {
-      // TODO: Update profile with API
+      _updateProfile();
+    }
+  }
+
+  Future<void> _updateProfile() async {
+    _updateProfileInProgress = true;
+    if (mounted) {
+      setState(() {});
+    }
+
+    Uint8List? imageBytes;
+
+    Map<String, String> requestBody = {
+      "email": _emailTEController.text,
+      "firstName": _firstNameTEController.text.trim(),
+      "lastName": _lastNameTEController.text.trim(),
+      "mobile": _phoneTEController.text.trim(),
+    };
+
+    if (_passwordTEController.text.isNotEmpty) {
+      requestBody['password'] = _passwordTEController.text;
+    }
+
+    if (_selectedImage != null) {
+      imageBytes = await _selectedImage!.readAsBytes();
+      requestBody['photo'] = base64Encode(imageBytes);
+    }
+
+    NetworkResponse response = await NetworkCaller.postRequest(
+      url: Urls.updateProfileUrl,
+      body: requestBody,
+    );
+
+    _updateProfileInProgress = false;
+    if (mounted) {
+      setState(() {});
+    }
+
+    if (response.isSuccess) {
+      UserModel userModel = UserModel(
+          id: AuthController.userModel!.id,
+          email: _emailTEController.text,
+          firstName: _firstNameTEController.text.trim(),
+          lastName: _lastNameTEController.text.trim(),
+          phone: _phoneTEController.text.trim(),
+          photo: imageBytes == null
+              ? AuthController.userModel?.photo
+              : base64Encode(imageBytes));
+
+      await AuthController.updateUserData(userModel);
+
+      _passwordTEController.clear();
+      if (mounted) {
+        showSnackBarMessage(context, 'Profile updated');
+      }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(context, response.errorMessage!);
+      }
     }
   }
 

@@ -1,19 +1,22 @@
+
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:task_manager/ui/controllers/auth_controller.dart';
 import 'package:task_manager/ui/screens/sign_in_screen.dart';
 import 'package:task_manager/ui/screens/update_profile_screen.dart';
 
-class TmAppBar extends StatefulWidget implements PreferredSizeWidget {
-  const TmAppBar({super.key});
+class TMAppBar extends StatefulWidget implements PreferredSizeWidget {
+  const TMAppBar({super.key});
 
   @override
-  State<TmAppBar> createState() => _TmAppBarState();
+  State<TMAppBar> createState() => _TMAppBarState();
 
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }
 
-class _TmAppBarState extends State<TmAppBar> {
+class _TMAppBarState extends State<TMAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -22,49 +25,56 @@ class _TmAppBarState extends State<TmAppBar> {
         onTap: _onTapProfileBar,
         child: Row(
           children: [
-            CircleAvatar(),
-            SizedBox(
-              width: 16,
+            CircleAvatar(
+              backgroundImage:
+                  AuthController.userModel?.photo == null
+                      ? null
+                      : MemoryImage(
+                        base64Decode(AuthController.userModel!.photo!),
+                      ),
             ),
+            const SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    AuthController.userModel!.firstName +
-                        ' ' +
-                        AuthController.userModel!.lastName,
+                    AuthController.userModel!.fullName,
                     style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
                   ),
                   Text(
                     AuthController.userModel!.email,
                     style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.white),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white,
+                    ),
                   ),
                 ],
               ),
             ),
-            IconButton(onPressed: _onTapLogOUtButton, icon: Icon(Icons.logout))
+            IconButton(onPressed: _onTapLogOutButton, icon: Icon(Icons.logout)),
           ],
         ),
       ),
     );
   }
 
-  void _onTapLogOUtButton() async {
+  Future<void> _onTapLogOutButton() async {
     await AuthController.clearData();
     Navigator.pushNamedAndRemoveUntil(
-        context, SignInScreen.routeName, (predicate) => false);
+      context,
+      SignInScreen.routeName,
+      (predicate) => false,
+    );
   }
 
   void _onTapProfileBar() {
-    if (ModalRoute.of(context)!.settings.name !=
-        UpdateProfileScreen.routeName) {
+    if (ModalRoute.of(context)!.settings.name != UpdateProfileScreen.routeName) {
       Navigator.pushNamed(context, UpdateProfileScreen.routeName);
     }
   }

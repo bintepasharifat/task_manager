@@ -180,7 +180,7 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   void _onTapForgotPasswordButton() {
-    Navigator.pushNamed(context, ForgotPasswordEmail.routeName);
+    Navigator.pushNamed(context, ForgotPasswordEmailScreen.routeName);
   }
 
   void _onTapSignUpButton() {

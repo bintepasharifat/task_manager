@@ -21,7 +21,7 @@ class _AddNewTaskState extends State<AddNewTask> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TmAppBar(),
+      appBar: TMAppBar(),
       body: ScreenBackground(
           child: Padding(
         padding: const EdgeInsets.all(16),
@@ -114,7 +114,7 @@ class _AddNewTaskState extends State<AddNewTask> {
       "status": "New"
     };
     NetworkResponse response = await NetworkCaller.postRequest(
-        url: Urls.createNewtaskUrl, body: requestBody, isFromLogin: true);
+        url: Urls.createNewTaskUrl, body: requestBody, isFromLogin: true);
     _addNewTaskInProgress = false;
     setState(() {});
     if (response.isSuccess) {

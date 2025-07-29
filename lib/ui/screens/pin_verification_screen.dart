@@ -3,11 +3,17 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:task_manager/data/models/verifcation_data_model.dart';
+import 'package:task_manager/data/service/network_caller.dart';
+import 'package:task_manager/data/urls.dart';
 import 'package:task_manager/ui/screens/change_password_screen.dart';
 import 'package:task_manager/ui/screens/sign_in_screen.dart';
 import 'package:task_manager/ui/screens/sign_up_screen.dart';
 import 'package:task_manager/ui/utils/assets_imagepath.dart';
+import 'package:task_manager/ui/widgets/centered_circular_progress_indicator.dart';
 import 'package:task_manager/ui/widgets/screen_background.dart';
+import 'package:task_manager/ui/widgets/snack_bar_message.dart';
 
 class PinVerificationScreen extends StatefulWidget {
   const PinVerificationScreen({super.key});
@@ -21,11 +27,8 @@ class _PinVerificationState extends State<PinVerificationScreen> {
   final TextEditingController _otpController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  get errorController => null;
-
-  get textEditingController => null;
-
+  bool _otpisLoading = false;
+  // final FocusNode _focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +81,7 @@ class _PinVerificationState extends State<PinVerificationScreen> {
                       foregroundColor: Colors.white,
                       fixedSize: const Size.fromWidth(double.maxFinite),
                     ),
-                    onPressed: _onTapsubmitButton,
+                    onPressed: _onTapSubmitButton,
                     child: Text('verify')),
                 const SizedBox(height: 32),
                 Center(
@@ -96,7 +99,7 @@ class _PinVerificationState extends State<PinVerificationScreen> {
                           style: const TextStyle(
                               color: Colors.green, fontWeight: FontWeight.w700),
                           recognizer: TapGestureRecognizer()
-                            ..onTap = _ontapSignInButton,
+                            ..onTap = _onTapSignInButton,
                         ),
                       ],
                     ),
@@ -109,25 +112,80 @@ class _PinVerificationState extends State<PinVerificationScreen> {
       ),
     );
   }
+  //
 
-  void _onTapsubmitButton() {
-    if (_formKey.currentState!.validate()) {
-      
-    }
+  void _onTapSubmitButton() {
+    // if (_formKey.currentState!.validate()) {
+    //   // TODO: Sign in with API
+    // }
     Navigator.pushNamed(context, ChangePasswordScreen.routeName);
   }
 
-  void _ontapSignInButton() {
+  void _onTapSignInButton() {
     Navigator.pushNamedAndRemoveUntil(
-        context, SignInScreen.routeName, (predicate) => false);
+      context,
+      SignInScreen.routeName,
+      (predicate) => false,
+    );
+  }
 
-    @override
-    void dispose() {
-      _otpController.dispose();
-
-      super.dispose();
+  Future<void> _otpVerification() async {
+    _otpisLoading = true;
+    if (mounted) {
+      setState(() {});
     }
+
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? Email = sharedPreferences.getString('email') ?? '';
+    await sharedPreferences.setString('UserOtp', _otpController.text.trim());
+
+    NetworkResponse response = await NetworkCaller.getRequest(
+      url: Urls.veriftOtpdUrl(Email, _otpController.text.trim()),
+    );
+    if (response.isSuccess) {
+      VerificationDataModel emailPinVerificationDataModel =
+          VerificationDataModel.fromJson(response.body!);
+
+      String getStatus = emailPinVerificationDataModel.status ?? '';
+      String getData = emailPinVerificationDataModel.data ?? '';
+
+      if (getStatus == 'success') {
+        _otpisLoading = false;
+        if (mounted) {
+          _otpController.clear();
+          showSnackBarMessage(context, "$getStatus $getData");
+          showSnackBarMessage(context, 'Please set your new password');
+          await Future.delayed(Duration(seconds: 1));
+          await Navigator.pushNamedAndRemoveUntil(
+            context,
+            ChangePasswordScreen.routeName,
+            (predicate) => false,
+          );
+        }
+      } else {
+        if (mounted) {
+          _otpisLoading = false;
+          showSnackBarMessage(context, "$getStatus $getData");
+        }
+      }
+    } else {
+      if (mounted) {
+        _otpisLoading = false;
+        showSnackBarMessage(context, response.errorMessage!);
+      }
+    }
+
+    _otpisLoading = false;
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  @override
+  void dispose() {
+    // _otpTEController.dispose();
+    super.dispose();
   }
 }
 
-class _emailController {}
+  
