@@ -32,135 +32,147 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _confirmPassword = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ScreenBackground(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Form(
-            key: _formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 80),
-                Text(
-                  'Set password',
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  'Minnmum length password 8 digit',
-                  style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w700),
-                ),
-                const SizedBox(height: 24),
-
-                /// 🔐 Password Field
-                TextFormField(
-                  controller: _passwordController,
-                  textInputAction: TextInputAction.next,
-                  obscureText: _obscurePassword,
-                  decoration: InputDecoration(
-                    hintText: 'Password',
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscurePassword
-                            ? Icons.visibility_off
-                            : Icons.visibility,
+          child: Padding(
+            padding: EdgeInsetsGeometry.all(20),
+            child: Form(
+              key: _formKey,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 80),
+                  Text(
+                    'Set Password',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Minimum Length password 8 characters with Latter and number combination',
+                    style: TextStyle(color: Colors.grey, fontSize: 12),
+                  ),
+                  const SizedBox(height: 24),
+                  TextFormField(
+                    controller: _passwordController,
+                    obscureText: _obscurePassword,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscurePassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _obscurePassword = !_obscurePassword;
+                          });
+                        },
                       ),
+                    ),
+                    validator: (String? value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your password';
+                      } else if (value.length < 6) {
+                        return 'Password must be at least 6 characters';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 8),
+                  TextFormField(
+                    controller: _confrmController,
+                    obscureText: _confirmPassword,
+                    decoration: InputDecoration(
+                      labelText: 'Confirm Password',
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _confirmPassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _confirmPassword = !_confirmPassword;
+                          });
+                        },
+                      ),
+                    ),
+                    validator: (String? value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your password';
+                      } else if (value.length < 6) {
+                        return 'Password must be at least 6 characters';
+                      } else if (_passwordController.text !=
+                          _confrmController.text) {
+                        return 'Passwords do not match';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  Visibility(
+                    visible: _resetPasswordInProgress == false,
+                    replacement: CenteredCircularProgressIndicator(),
+                    child: ElevatedButton(
                       onPressed: () {
-                        setState(() {
-                          _obscurePassword = !_obscurePassword;
-                        });
+                        if (_formKey.currentState!.validate()) {
+                          _resetPassword();
+                        }
                       },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        backgroundColor: Colors.green,
+                        foregroundColor: Colors.white,
+                        fixedSize: const Size.fromWidth(double.maxFinite),
+                      ),
+                      child: Text('Confirm'),
                     ),
                   ),
-                  validator: (String? value) {
-                    if ((value?.length ?? 0) <= 6) {
-                      return 'Enter a valid password';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-
-                /// 🔐 Confirm Password Field
-                TextFormField(
-                  controller: _confrmController,
-                  obscureText: _obscureConfirmPassword,
-                  decoration: InputDecoration(
-                    hintText: 'Confirm Password',
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscureConfirmPassword
-                            ? Icons.visibility_off
-                            : Icons.visibility,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _obscureConfirmPassword = !_obscureConfirmPassword;
-                        });
-                      },
-                    ),
-                  ),
-                  validator: (String? value) {
-                    if ((value ?? '') != _passwordController.text) {
-                      return "Confirm password doesn't match";
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-
-                /// ✅ Confirm Button
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    backgroundColor: Colors.green,
-                    foregroundColor: Colors.white,
-                    fixedSize: const Size.fromWidth(double.maxFinite),
-                  ),
-                  onPressed: _onTapSignInButton,
-                  child: Text('Confirm'),
-                ),
-                const SizedBox(height: 32),
-
-                /// 🔄 Sign In Option
-                Center(
-                  child: RichText(
-                    text: TextSpan(
-                      text: " Have an account?",
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                      ),
+                  const SizedBox(height: 32),
+                  Center(
+                    child: Column(
                       children: [
-                        TextSpan(
-                          text: " Sign In",
-                          style: const TextStyle(
-                              color: Colors.green, fontWeight: FontWeight.w700),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = _onTapSignInButton,
+                        RichText(
+                          text: TextSpan(
+                            text: 'have an account? ',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.4,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: 'Sign In',
+                                style: TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = _onTapSignInButton,
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
       ),
     );
   }
-
+  //
   void _onTapSignInButton() {
     Navigator.pushNamedAndRemoveUntil(
       context,

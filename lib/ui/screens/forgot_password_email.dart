@@ -1,121 +1,3 @@
-// import 'package:email_validator/email_validator.dart';
-// import 'package:flutter/gestures.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_svg/svg.dart';
-// import 'package:task_manager/ui/screens/pin_verification_screen.dart';
-// import 'package:task_manager/ui/screens/sign_up_screen.dart';
-// import 'package:task_manager/ui/utils/assets_imagepath.dart';
-// import 'package:task_manager/ui/widgets/screen_background.dart';
-
-// class ForgotPasswordEmail extends StatefulWidget {
-//   const ForgotPasswordEmail({super.key});
-//   static const String routeName = '/forgot-password-email';
-
-//   @override
-//   State<ForgotPasswordEmail> createState() => _ForgotPasswordEmailState();
-// }
-
-// class _ForgotPasswordEmailState extends State<ForgotPasswordEmail> {
-//   final TextEditingController _emailController = TextEditingController();
-
-//   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: ScreenBackground(
-//         child: SingleChildScrollView(
-//           padding: const EdgeInsets.all(16),
-//           child: Form(
-//             key: _formKey,
-//             autovalidateMode: AutovalidateMode.onUserInteraction,
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 const SizedBox(height: 80),
-//                 Text('Your Email Address',
-//                     style:
-//                         TextStyle(fontSize: 28, fontWeight: FontWeight.w700)),
-//                 SizedBox(
-//                   height: 20,
-//                 ),
-//                 Text('A 6 dights OTP will be sent to your email address',
-//                     style: TextStyle(
-//                         fontSize: 15,
-//                         color: Colors.grey,
-//                         fontWeight: FontWeight.w700)),
-//                 const SizedBox(height: 24),
-//                 TextFormField(
-//                   controller: _emailController,
-//                   textInputAction: TextInputAction.next,
-//                   decoration: const InputDecoration(hintText: 'Email'),
-//                   validator: (String? value) {
-//                     String email = value ?? '';
-//                     if (!EmailValidator.validate(email) == false) {
-//                       return 'Enter a valid email';
-//                     }
-//                     return null;
-//                   },
-//                 ),
-//                 const SizedBox(height: 16),
-//                 ElevatedButton(
-//                   style: ElevatedButton.styleFrom(
-//                     shape: RoundedRectangleBorder(
-//                         borderRadius: BorderRadius.circular(8)),
-//                     padding: const EdgeInsets.symmetric(vertical: 12),
-//                     backgroundColor: Colors.green,
-//                     foregroundColor: Colors.white,
-//                     fixedSize: const Size.fromWidth(double.maxFinite),
-//                   ),
-//                   onPressed: _onTapsubmitButton,
-//                   child: const Icon(Icons.arrow_circle_down_outlined),
-//                 ),
-//                 const SizedBox(height: 32),
-//                 Center(
-//                   child: RichText(
-//                     text: TextSpan(
-//                       text: " Have an account?",
-//                       style: const TextStyle(
-//                         fontSize: 20,
-//                         fontWeight: FontWeight.w600,
-//                         color: Colors.black,
-//                       ),
-//                       children: [
-//                         TextSpan(
-//                           text: " Sign In",
-//                           style: const TextStyle(
-//                               color: Colors.green, fontWeight: FontWeight.w700),
-//                           recognizer: TapGestureRecognizer()
-//                             ..onTap = _ontapSignInButton,
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-
-//   void _onTapsubmitButton() {
-//     if (_formKey.currentState!.validate()) {}
-//     Navigator.pushNamed(context, PinVerificationScreen.routeName);
-//   }
-
-//   void _ontapSignInButton() {
-//     Navigator.pop(context);
-//   }
-
-//   @override
-//   void dispose() {
-//     _emailController.dispose();
-
-//     super.dispose();
-//   }
-// }
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -150,7 +32,7 @@ class _ForgotPasswordEmailScreenState extends State<ForgotPasswordEmailScreen> {
       body: ScreenBackground(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsetsGeometry.all(25),
             child: Form(
               key: _formKey,
               autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -160,64 +42,76 @@ class _ForgotPasswordEmailScreenState extends State<ForgotPasswordEmailScreen> {
                   const SizedBox(height: 80),
                   Text(
                     'Your Email Address',
+                    textAlign: TextAlign.start,
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'A 6 digits OTP will be sent to your email address',
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleSmall
-                        ?.copyWith(color: Colors.grey),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'A 6 digit varification pin will sent to your\nemail address',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(color: Colors.grey, fontSize: 12),
+                    ),
                   ),
                   const SizedBox(height: 24),
                   TextFormField(
                     controller: _emailController,
-                    textInputAction: TextInputAction.next,
                     decoration: InputDecoration(hintText: 'Email'),
                     validator: (String? value) {
-                      String email = value ?? '';
-                      if (EmailValidator.validate(email) == false) {
-                        return 'Enter a valid email';
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email';
+                      } else if (!EmailValidator.validate(value)) {
+                        return 'Please enter a valid email';
                       }
                       return null;
                     },
                   ),
                   const SizedBox(height: 16),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)),
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      backgroundColor: Colors.green,
-                      foregroundColor: Colors.white,
-                      fixedSize: const Size.fromWidth(double.maxFinite),
-                    ),
-                    onPressed: _onTapSubmitButton,
-                    child: const Icon(Icons.arrow_circle_down_outlined),
-                  ),
-                  const SizedBox(height: 32),
                   Center(
-                    child: RichText(
-                      text: TextSpan(
-                        text: "Have an account? ",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                          letterSpacing: 0.4,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: 'Sign In',
-                            style: TextStyle(
-                              color: Colors.green,
-                              fontWeight: FontWeight.w700,
+                    child: Column(
+                      children: [
+                        Visibility(
+                          visible: _emaillisLoading == false,
+                          replacement: CenteredCircularProgressIndicator(),
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                _getOtpMail();
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              backgroundColor: Colors.green,
+                              foregroundColor: Colors.white,
+                              fixedSize: const Size.fromWidth(double.maxFinite),
                             ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = _onTapSubmitButton,
+                            child: Icon(Icons.arrow_circle_right_outlined),
                           ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(height: 8),
+                        RichText(
+                          text: TextSpan(
+                            text: 'Have account? ',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.4,
+                            ),
+                            children: [
+                              TextSpan(
+                                  text: 'Sign In',
+                                  style: TextStyle(
+                                    color: Colors.green,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = _onTapSignInButton),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -229,7 +123,7 @@ class _ForgotPasswordEmailScreenState extends State<ForgotPasswordEmailScreen> {
     );
   }
 
-  void _onTapSubmitButton() {
+  void _onTapSignInButton() {
     Navigator.pushNamedAndRemoveUntil(
       context,
       PinVerificationScreen.routeName,

@@ -28,91 +28,102 @@ class _PinVerificationState extends State<PinVerificationScreen> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _otpisLoading = false;
-  // final FocusNode _focusNode = FocusNode();
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ScreenBackground(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Form(
-            key: _formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 80),
-                Text('Pin Verification',
-                    style:
-                        TextStyle(fontSize: 28, fontWeight: FontWeight.w700)),
-                SizedBox(
-                  height: 20,
-                ),
-                Text('A 6 dights OTP has been sent to your email address',
-                    style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w700)),
-                const SizedBox(height: 24),
-                PinCodeTextField(
-                  length: 6,
-                  keyboardType: TextInputType.number,
-                  animationType: AnimationType.fade,
-                  pinTheme: PinTheme(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Form(
+              key: _formKey,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 80),
+                  Text(
+                    'Pin Verification',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'A 6 digits OTP has been sent to your email address',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.titleSmall?.copyWith(color: Colors.grey),
+                  ),
+                  const SizedBox(height: 24),
+                  PinCodeTextField(
+                    length: 6,
+                    animationType: AnimationType.fade,
+                    keyboardType: TextInputType.number,
+                    // autoDismissKeyboard: false,
+                    // autoFocus: true,
+                    // focusNode: _focusNode,
+                    pinTheme: PinTheme(
                       shape: PinCodeFieldShape.box,
                       borderRadius: BorderRadius.circular(5),
                       fieldHeight: 50,
-                      fieldWidth: 40,
+                      fieldWidth: 50,
                       activeFillColor: Colors.white,
                       selectedColor: Colors.green,
-                      inactiveColor: Colors.grey),
-                  animationDuration: Duration(milliseconds: 300),
-                  backgroundColor: Colors.white,
-                  controller: _otpController,
-                  appContext: context,
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)),
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      backgroundColor: Colors.green,
-                      foregroundColor: Colors.white,
-                      fixedSize: const Size.fromWidth(double.maxFinite),
+                      inactiveColor: Colors.grey,
                     ),
-                    onPressed: _onTapSubmitButton,
-                    child: Text('verify')),
-                const SizedBox(height: 32),
-                Center(
-                  child: RichText(
-                    text: TextSpan(
-                      text: " Have an account?",
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
+                    animationDuration: Duration(milliseconds: 300),
+                    backgroundColor: Colors.transparent,
+                    controller: _otpController,
+                    appContext: context,
+                  ),
+                  const SizedBox(height: 16),
+                  Visibility(
+                    visible: _otpisLoading == false,
+                    replacement: CenteredCircularProgressIndicator(),
+                    child: ElevatedButton(
+                      onPressed: () => _otpVerification(),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        backgroundColor: Colors.green,
+                        foregroundColor: Colors.white,
+                        fixedSize: const Size.fromWidth(double.maxFinite),
                       ),
-                      children: [
-                        TextSpan(
-                          text: " Sign In",
-                          style: const TextStyle(
-                              color: Colors.green, fontWeight: FontWeight.w700),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = _onTapSignInButton,
-                        ),
-                      ],
+                      child: Text('Verify'),
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 32),
+                  Center(
+                    child: RichText(
+                      text: TextSpan(
+                        text: "Have an account? ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                          letterSpacing: 0.4,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: 'Sign In',
+                            style: TextStyle(
+                              color: Colors.green,
+                              fontWeight: FontWeight.w700,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = _onTapSignInButton,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       ),
     );
   }
-  //
+  
 
   void _onTapSubmitButton() {
     // if (_formKey.currentState!.validate()) {
@@ -187,5 +198,3 @@ class _PinVerificationState extends State<PinVerificationScreen> {
     super.dispose();
   }
 }
-
-  
