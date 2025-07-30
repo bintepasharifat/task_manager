@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -26,12 +25,11 @@ class _TMAppBarState extends State<TMAppBar> {
         child: Row(
           children: [
             CircleAvatar(
-              backgroundImage:
-                  AuthController.userModel?.photo == null
-                      ? null
-                      : MemoryImage(
-                        base64Decode(AuthController.userModel!.photo!),
-                      ),
+              backgroundImage: AuthController.userModel?.photo == null
+                  ? null
+                  : MemoryImage(
+                      base64Decode(AuthController.userModel!.photo!),
+                    ),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -39,7 +37,7 @@ class _TMAppBarState extends State<TMAppBar> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    AuthController.userModel!.fullName,
+                    AuthController.userModel!.fullName ?? 'Guest',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -74,7 +72,8 @@ class _TMAppBarState extends State<TMAppBar> {
   }
 
   void _onTapProfileBar() {
-    if (ModalRoute.of(context)!.settings.name != UpdateProfileScreen.routeName) {
+    if (ModalRoute.of(context)!.settings.name !=
+        UpdateProfileScreen.routeName) {
       Navigator.pushNamed(context, UpdateProfileScreen.routeName);
     }
   }

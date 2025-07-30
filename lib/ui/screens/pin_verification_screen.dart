@@ -123,7 +123,6 @@ class _PinVerificationState extends State<PinVerificationScreen> {
       ),
     );
   }
-  
 
   void _onTapSubmitButton() {
     // if (_formKey.currentState!.validate()) {

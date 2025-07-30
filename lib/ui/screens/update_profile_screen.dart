@@ -177,16 +177,19 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
               ),
             ),
             const SizedBox(width: 8),
-            Text(
-              _selectedImage == null ? 'Select image' : _selectedImage!.name,
-              maxLines: 1,
-              style: TextStyle(overflow: TextOverflow.ellipsis),
+            Expanded(
+              child: Text(
+                _selectedImage == null ? 'Select image' : _selectedImage!.name,
+                maxLines: 1,
+                style: TextStyle(overflow: TextOverflow.ellipsis),
+              ),
             ),
           ],
         ),
       ),
     );
   }
+  
 
   Future<void> _onTapPhotoPicker() async {
     final XFile? pickedImage = await _imagePicker.pickImage(
