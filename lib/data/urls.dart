@@ -21,4 +21,6 @@ class Urls {
   static const String resetPasswordUrl = "$_baseUrl/RecoverResetPassword";
 
   static const String updateProfileUrl = '$_baseUrl/ProfileUpdate';
+
+  
 }

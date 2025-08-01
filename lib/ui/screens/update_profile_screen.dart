@@ -189,7 +189,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       ),
     );
   }
-  
 
   Future<void> _onTapPhotoPicker() async {
     final XFile? pickedImage = await _imagePicker.pickImage(

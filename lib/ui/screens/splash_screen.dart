@@ -25,16 +25,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _moveToNextScreen() async {
     await Future.delayed(const Duration(seconds: 4));
-    bool isLoggedIn =await AuthController.isUserLoggedIn();
-    if(isLoggedIn){
+    bool isLoggedIn = await AuthController.isUserLoggedIn();
+    if (isLoggedIn) {
       Navigator.pushReplacementNamed(context, MainNaveBarHoldrScreen.routeName);
-
-    }else{
-Navigator.pushReplacementNamed(context, SignInScreen.routeName);
+    } else {
+      Navigator.pushReplacementNamed(context, SignInScreen.routeName);
     }
-    
-      
-    
   }
 
   @override
