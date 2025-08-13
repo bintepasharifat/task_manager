@@ -1,26 +1,25 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:task_manager/Controller/sign_in_controller.dart';
-import 'package:task_manager/widget/ScreenBackground.dart';
-import 'package:email_validator/email_validator.dart';
-import '../../widget/Center_circular_progress_bar.dart';
+import 'package:task_manager/widget/Center_circular_progress_bar.dart';
+import '../../Controller/set_password_controller.dart';
+import '../../widget/ScreenBackground.dart';
 
-class SignInScreen extends StatefulWidget {
-  const SignInScreen({super.key});
+class Setpassword extends StatefulWidget {
+  const Setpassword({super.key});
 
-  static const String name = '/sign-in';
+  static const String name = '/setpassword';
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  State<Setpassword> createState() => _SetpasswordState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _SetpasswordState extends State<Setpassword> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<SignInController>(
+    return GetBuilder<SetPasswordController>(
       builder: (controller) {
         return Scaffold(
           body: ScreenBackground(
@@ -35,20 +34,37 @@ class _SignInScreenState extends State<SignInScreen> {
                     children: [
                       const SizedBox(height: 80),
                       Text(
-                        'Get Started With',
+                        'Set Password',
                         style: Theme.of(context).textTheme.titleLarge,
+                      ),
+
+                      const SizedBox(height: 8),
+                      Text(
+                        'Minimum Length password 8 characters with Latter and number combination',
+                        style: TextStyle(color: Colors.grey, fontSize: 12),
                       ),
                       const SizedBox(height: 24),
 
-                      const SizedBox(height: 24),
                       TextFormField(
-                        controller: controller.emailController,
-                        textInputAction: TextInputAction.next,
-                        decoration: InputDecoration(hintText: 'Email'),
+                        controller: controller.passwordController,
+                        obscureText: controller.obscurePassword,
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              controller.obscurePassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                            ),
+                            onPressed: () =>
+                                controller.togglePasswordVisibility(),
+                          ),
+                        ),
                         validator: (String? value) {
-                          String email = value ?? '';
-                          if (EmailValidator.validate(email) == false) {
-                            return 'Enter a valid email';
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your password';
+                          } else if (value.length < 6) {
+                            return 'Password must be at least 6 characters';
                           }
                           return null;
                         },
@@ -56,24 +72,29 @@ class _SignInScreenState extends State<SignInScreen> {
                       const SizedBox(height: 8),
 
                       TextFormField(
-                        controller: controller.passwordController,
-                        obscureText: controller.obscurePassword,
-                        textInputAction: TextInputAction.done,
+                        controller: controller.ConfirmpasswordController,
+                        obscureText: controller.ConfirmobscurePassword,
                         decoration: InputDecoration(
-                          hintText: 'Password',
+                          labelText: 'Confirm Password',
                           suffixIcon: IconButton(
                             icon: Icon(
-                              controller.obscurePassword
+                              controller.ConfirmobscurePassword
                                   ? Icons.visibility_off
                                   : Icons.visibility,
                             ),
-                            onPressed: () => controller.toggleObscurePassword(),
+                            onPressed: () =>
+                                controller.toggleConfirmPasswordVisibility(),
                           ),
                         ),
 
                         validator: (String? value) {
-                          if ((value?.length ?? 0) <= 6) {
-                            return 'Enter a valid password';
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your password';
+                          } else if (value.length < 6) {
+                            return 'Password must be at least 6 characters';
+                          } else if (controller.passwordController.text !=
+                              controller.ConfirmpasswordController.text) {
+                            return 'Passwords do not match';
                           }
                           return null;
                         },
@@ -85,10 +106,10 @@ class _SignInScreenState extends State<SignInScreen> {
                         child: ElevatedButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              controller.signIn(context);
+                              controller.resetPassword(context);
                             }
                           },
-                          child: Icon(Icons.arrow_circle_right_outlined),
+                          child: Text('Confirm'),
                         ),
                       ),
 
@@ -97,32 +118,24 @@ class _SignInScreenState extends State<SignInScreen> {
                       Center(
                         child: Column(
                           children: [
-                            TextButton(
-                              onPressed: () =>
-                                  controller.onTapForgetPassword(context),
-                              child: Text(
-                                'Forget Password?',
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                            ),
-
                             RichText(
                               text: TextSpan(
-                                text: 'Don\'t have an account? ',
+                                text: 'have an account? ',
                                 style: TextStyle(
                                   color: Colors.black,
+                                  fontWeight: FontWeight.bold,
                                   letterSpacing: 0.4,
                                 ),
                                 children: [
                                   TextSpan(
-                                    text: 'Sign Up',
+                                    text: 'Sign In',
                                     style: TextStyle(
                                       color: Colors.green,
-                                      fontWeight: FontWeight.bold,
+                                      fontWeight: FontWeight.w700,
                                     ),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () =>
-                                          controller.onTapSignUpButton(context),
+                                          controller.onTapSignInButton(context),
                                   ),
                                 ],
                               ),
